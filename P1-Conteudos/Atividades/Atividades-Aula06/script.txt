@@ -1,0 +1,102 @@
+Script de criação:
+
+db.leituras.insertMany([
+{
+  estacao: { nome: "Estacao Beira Mar", localizacao: "Fortaleza" },
+  sensor: "temperatura",
+  valor: 32,
+  cidade: "Fortaleza"
+},
+{
+  estacao: { nome: "Estacao Centro", localizacao: "Fortaleza" },
+  sensor: "umidade",
+  valor: 70,
+  cidade: "Fortaleza"
+},
+{
+  estacao: { nome: "Estacao Praia", localizacao: "Fortaleza" },
+  sensor: "temperatura",
+  valor: 28,
+  cidade: "Fortaleza"
+},
+{
+  estacao: { nome: "Estacao Ibirapuera", localizacao: "São Paulo" },
+  sensor: "temperatura",
+  valor: 26,
+  cidade: "São Paulo"
+},
+{
+  estacao: { nome: "Estacao Centro", localizacao: "Campinas" },
+  sensor: "temperatura",
+  valor: 31,
+  cidade: "Campinas"
+},
+{
+  estacao: { nome: "Estacao Taquaral", localizacao: "Campinas" },
+  sensor: "umidade",
+  valor: 65,
+  cidade: "Campinas"
+}
+])
+
+
+
+Exercício 1:
+
+db.leituras.find(
+{
+  cidade: "Fortaleza",
+  sensor: "temperatura",
+  valor: { $gt: 30 }
+}
+)
+
+Exercício 2:
+
+db.leituras.find(
+{},
+{
+  _id: 0,
+  "estacao.nome": 1,
+  "estacao.localizacao": 1
+}
+)
+
+Exercício 3:
+
+db.leituras.countDocuments(
+{
+  sensor: "umidade"
+}
+)
+
+Exercício 4:
+
+db.leituras.aggregate([
+{
+  $match: { sensor: "temperatura" }
+},
+{
+  $group: {
+    _id: "$cidade",
+    mediaTemperatura: { $avg: "$valor" }
+  }
+}
+])
+
+Exercício 5:
+
+db.leituras.aggregate([
+{
+  $match: { sensor: "temperatura" }
+},
+{
+  $group: {
+    _id: "$cidade",
+    mediaTemperatura: { $avg: "$valor" }
+  }
+},
+{
+  $sort: { mediaTemperatura: -1 }
+}
+])
